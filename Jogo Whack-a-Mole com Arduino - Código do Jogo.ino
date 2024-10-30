@@ -101,7 +101,7 @@ void jogo_whack_a_mole(){
                         Serial.print("Numero aleatorio gerado: ");
                         Serial.println(led_aleatorio);
                         led_atual= led_atual<<(led_aleatorio-6); // Desloca o bit para a posição do LED aleatório.
-                        leds_acesos= led_atual|leds_acesos; // Operação Bitwise OR para ligar o LED aleatório.
+                        leds_acesos= led_atual|leds_acesos; // Operação Bitwise OR para ligar o LED aleatório, preservando o estado dos outros LEDs.
                         Serial.print("Led ligado pelo numero aleatorio gerado: ");
                         Serial.println(led_atual, BIN);
                         Serial.print("Leds acesos: ");
