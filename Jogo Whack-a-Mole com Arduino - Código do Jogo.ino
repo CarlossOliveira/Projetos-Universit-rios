@@ -155,7 +155,7 @@ void jogo_whack_a_mole(){
             return;
         }
 
-        led_atual= 0b00000001; // Esta condição é responsável por reeiniciar a variável de led atual sempre que um ciclo do jogo é completaddo.
+        led_atual= 0b00000001; // Esta condição é responsável por reeiniciar a variável de led atual sempre que um ciclo do jogo é completado.
 
     }
 }
