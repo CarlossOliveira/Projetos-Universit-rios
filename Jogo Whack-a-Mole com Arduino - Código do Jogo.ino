@@ -18,7 +18,7 @@ byte leds_acesos= 0b00000000; // variável responsável por armazenar o estado d
 
 void setup(){
     Serial.begin(9600); // Inicializa a comunicação Serial com um rate de 9600 bps para debug.
-    randomseed(analogRead(0)); // Inicializa o gerador de números aleatórios com um valor aleatório.
+    randomSeed(analogRead(0)); // Inicializa o gerador de números aleatórios com um valor aleatório.
     pinMode(botao, INPUT_PULLUP); // Configura o pino do botão como sendo de entrada e Pull-Up.
     for (byte led= 7; led<= 13; led++){
         pinMode(led, OUTPUT); // Configura os pinos dos LEDs como saída.
