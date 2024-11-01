@@ -4,7 +4,7 @@
 // Concebido por: Carlos Oliveira
 //
 
-// Define o pino do botão e inicializa variáveis para armazenar estados e tempos que haverão de ser utilizados ao longo do programa:
+// Define o pino do botão e inicializa variáveis para armazenar estados e tempos que serão utilizados ao longo do programa:
 const byte botao= 4; // Pino onde o botão está conectado.
 byte estado_botao;
 byte ultimo_estado_botao= HIGH; // Último estado do botão (inicialmente HIGH pois o botão está configurado como INPUT_PULLUP).
@@ -13,8 +13,8 @@ const byte tempo_debounce= 20; // Tempo de debounce em milissegundos.
 const int tempo_reset= 2000; // Tempo necessário para iniciar o jogo ao pressionar o botão.
 const byte tempo_acender_led= 500; // Tempo em milissegundos em que o LED aleatório fica aceso.
 byte leitura_estado_botao;
-byte led_atual= 0b00000001; // variável responsável por armazenar o estado atual do LED que está aceso.
-byte leds_acesos= 0b00000000; // variável responsável por armazenar o estado de todos os LEDs que estão acesos.
+byte led_atual= 0b00000001; // Variável responsável por armazenar o estado atual do LED que está aceso.
+byte leds_acesos= 0b00000000; // Variável responsável por armazenar o estado de todos os LEDs que estão acesos.
 
 void setup(){
     Serial.begin(9600); // Inicializa a comunicação Serial com um rate de 9600 bps para debug.
@@ -38,7 +38,7 @@ void loop(){
                 unsigned long tempo_inicio_pressao= millis(); // Marca o tempo de início da pressão do botão.
                 while (digitalRead(botao)==LOW){
                     if ((millis()-tempo_inicio_pressao)>=tempo_reset){
-                        Serial.println("--- !JOGO INICIADO! ---"); // Imprime uma mensagem de início do jogo na comunicação Serial para Debug.
+                        Serial.println("--- !JOGO INICIADO! ---"); // Imprime uma mensagem de início do jogo na comunicação Serial para debug.
                         animacao_leds(7, 13, 3); // Animação de início do jogo.
                         jogo_whack_a_mole(); // Chama a função para iniciar o jogo.
                         break; // Sai do loop quando o jogo é finalizado e retorna ao estado IDLE do programa.
@@ -112,7 +112,7 @@ void jogo_whack_a_mole(){
             if ((millis()-ultimo_tempo_debounce)>tempo_reset){
                 if (leitura_estado_botao==estado_botao && estado_botao==LOW){
                 // Sequência de reset:
-                Serial.println("--- !JOGO RESETADO! ---"); // Imprime uma mensagem de reinício do jogo na comunicação Serial para Debug.
+                Serial.println("--- !JOGO RESETADO! ---"); // Imprime uma mensagem de reinício do jogo na comunicação Serial para debug.
                 leds_acesos= 0b00000000;
                 for (byte led= 7; led<= 13; led++){
                     digitalWrite(led, LOW);
@@ -138,7 +138,7 @@ void jogo_whack_a_mole(){
         // Condição para verificar se todos os LEDs estão acesos e finalizar o jogo:
         if (0b11111110==leds_acesos){
             leds_acesos= 0b00000000;
-            Serial.println("--- !JOGO TERMINADO! ---"); // Imprime uma mensagem de fim do jogo na comunicação Serial para Debug.
+            Serial.println("--- !JOGO TERMINADO! ---"); // Imprime uma mensagem de fim do jogo na comunicação Serial para debug.
             for (int led= 7; led<= 13; led++){
                 digitalWrite(led, LOW);
                 }
