@@ -31,23 +31,16 @@ void loop(){
         ultimo_tempo_debounce=millis(); // Atualiza o tempo de debounce.
     }
 
-    // Condição para assegurar que não ocorre overflow na variável ultimo_tempo_debounce ao mesmo tempo que é mantida a eficácia e lógica do debouncing:
-    if (ultimo_tempo_debounce>=10000){
-        ultimo_tempo_debounce= 30;
-    }
-
-    if ((millis()-ultimo_tempo_debounce)>tempo_debounce){
+    if ((millis()-ultimo_tempo_debounce)>=tempo_reset){
         if (leitura_estado_botao!=estado_botao){
             estado_botao= leitura_estado_botao; // Atualiza o estado do botão.
             if (estado_botao==LOW){
-                unsigned long tempo_inicio_pressao= millis(); // Marca o tempo de início da pressão do botão.
                 while (digitalRead(botao)==LOW){
-                    if ((millis()-tempo_inicio_pressao)>=tempo_reset){
-                        Serial.println("--- !JOGO INICIADO! ---"); // Imprime uma mensagem de início do jogo na comunicação Serial para Debug.
-                        animacao_leds(7, 13, 3); // Animação de início do jogo.
-                        jogo_whack_a_mole(); // Chama a função para iniciar o jogo.
-                        break; // Sai do loop quando o jogo é finalizado e retorna ao estado IDLE do programa.
-                    }
+                    Serial.println("--- !JOGO INICIADO! ---"); // Imprime uma mensagem de início do jogo na comunicação Serial para Debug.
+                    animacao_leds(7, 13, 3); // Animação de início do jogo.
+                    jogo_whack_a_mole(); // Chama a função para iniciar o jogo.
+                    break; // Sai do loop quando o jogo é finalizado e retorna ao estado IDLE do programa.
+                    
                 }
             }
         }
@@ -82,7 +75,6 @@ void jogo_whack_a_mole(){
 
         // Inicia um contador para auxiliar na leitura do botão e define o estado do botão como não pressionado:
         unsigned long tempo_inicio= millis();
-        bool botao_pressionado= false;
 
         // Loop para verificar se o botão foi pressionado durante o tempo em que o LED aleatório está aceso (contém um método para debounce):
         while ((millis()-tempo_inicio)<tempo_acender_led){
@@ -132,9 +124,6 @@ void jogo_whack_a_mole(){
 
         }
 
-        // Comando para apagar o LED aleatório após o tempo definido caso o botão não tenha sido pressionado no tempo definido:
-        //digitalWrite(led_aleatorio, LOW);
-
         // Condição para manter o LED aceso até ao fim do jogo caso o botão tenha sido pressionado durante o tempo definido:
         for (byte led= 7; led<= 13; led++){
             if (leds_acesos & (1<<(led-6))){
@@ -146,14 +135,14 @@ void jogo_whack_a_mole(){
 
         // Condição para verificar se todos os LEDs estão acesos e finalizar o jogo:
         if (0b11111110==leds_acesos){
-        leds_acesos= 0b00000000;
-        Serial.println("--- !JOGO TERMINADO! ---"); // Imprime uma mensagem de fim do jogo na comunicação Serial para Debug.
-        for (int led= 7; led<= 13; led++){
-            digitalWrite(led, LOW);
-            }
-            delay(150);
-            animacao_leds(7, 13, 3);
-            return;
+            leds_acesos= 0b00000000;
+            Serial.println("--- !JOGO TERMINADO! ---"); // Imprime uma mensagem de fim do jogo na comunicação Serial para Debug.
+            for (int led= 7; led<= 13; led++){
+                digitalWrite(led, LOW);
+                }
+                delay(150);
+                animacao_leds(7, 13, 3);
+                return;
         }
 
         led_atual= 0b00000001; // Esta condição é responsável por reeiniciar a variável de led atual sempre que um ciclo do jogo é completado.
