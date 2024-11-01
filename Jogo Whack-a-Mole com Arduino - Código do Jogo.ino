@@ -31,16 +31,18 @@ void loop(){
         ultimo_tempo_debounce=millis(); // Atualiza o tempo de debounce.
     }
 
-    if ((millis()-ultimo_tempo_debounce)>=tempo_reset){
+    if ((millis()-ultimo_tempo_debounce)>tempo_debounce){
         if (leitura_estado_botao!=estado_botao){
             estado_botao= leitura_estado_botao; // Atualiza o estado do botão.
             if (estado_botao==LOW){
+                unsigned long tempo_inicio_pressao= millis(); // Marca o tempo de início da pressão do botão.
                 while (digitalRead(botao)==LOW){
-                    Serial.println("--- !JOGO INICIADO! ---"); // Imprime uma mensagem de início do jogo na comunicação Serial para Debug.
-                    animacao_leds(7, 13, 3); // Animação de início do jogo.
-                    jogo_whack_a_mole(); // Chama a função para iniciar o jogo.
-                    break; // Sai do loop quando o jogo é finalizado e retorna ao estado IDLE do programa.
-                    
+                    if ((millis()-tempo_inicio_pressao)>=tempo_reset){
+                        Serial.println("--- !JOGO INICIADO! ---"); // Imprime uma mensagem de início do jogo na comunicação Serial para Debug.
+                        animacao_leds(7, 13, 3); // Animação de início do jogo.
+                        jogo_whack_a_mole(); // Chama a função para iniciar o jogo.
+                        break; // Sai do loop quando o jogo é finalizado e retorna ao estado IDLE do programa.
+                    }
                 }
             }
         }
