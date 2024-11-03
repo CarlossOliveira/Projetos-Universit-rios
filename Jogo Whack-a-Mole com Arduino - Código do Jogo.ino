@@ -92,7 +92,7 @@ void jogo_whack_a_mole(){
                     // Condição para na eventualidade do botão ser pressionado durante o tempo em um LED que esteja aceso, efetua as operações Bitwise responsáveis por ligar e desligar os LEDs do jogo e sai loop de verificação:
                     if (estado_botao==LOW){
                         // Operações Bitwise e comentários para debug:
-                        Serial.println("------------ !Botao primido no tempo correto! ------------");
+                        Serial.println("------------ !Botao premido no tempo correto! ------------");
                         Serial.print("Numero aleatorio gerado: ");
                         Serial.println(led_aleatorio);
                         led_atual= led_atual<<(led_aleatorio-6); // Desloca o bit para a posição do LED aleatório.
@@ -108,7 +108,7 @@ void jogo_whack_a_mole(){
                 }
             }
 
-            // Condição para verificar se o botão foi primido durante o tempo definido para RESET:
+            // Condição para verificar se o botão foi premido durante o tempo definido para RESET:
             if ((millis()-ultimo_tempo_debounce)>tempo_reset){
                 if (leitura_estado_botao==estado_botao && estado_botao==LOW){
                 // Sequência de reset:
