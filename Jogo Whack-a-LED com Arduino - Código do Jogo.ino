@@ -1,6 +1,6 @@
 // C++
 //
-// Jogo Whack-a-Mole com um Arduino Uno
+// Jogo Whack-a-LED com um Arduino Uno
 // Concebido por: Carlos Oliveira
 //
 
@@ -40,7 +40,7 @@ void loop(){
                     if ((millis()-tempo_inicio_pressao)>=tempo_reset){
                         Serial.println("--- !JOGO INICIADO! ---"); // Imprime uma mensagem de início do jogo na comunicação Serial para debug.
                         animacao_leds(7, 13, 3); // Animação de início do jogo.
-                        jogo_whack_a_mole(); // Chama a função para iniciar o jogo.
+                        jogo_whack_a_led(); // Chama a função para iniciar o jogo.
                         break; // Sai do loop quando o jogo é finalizado e retorna ao estado IDLE do programa.
                     }
                 }
@@ -65,8 +65,8 @@ void animacao_leds(byte LED_INICIAL, byte LED_FINAL, byte NUMERO_REPETICOES) {
     return; // Este return serve apenas para marcar o fim da função.
 }
 
-// Função responsável por executar o código do jogo Whack-a-Mole (NOTA: Esta função serve apenas para manter o código mais limpo e organizado e não pode ser utilizada fora deste código uma vez que faz recurso de variáveis globais e de outras funções presentes apenas neste código.):
-void jogo_whack_a_mole(){
+// Função responsável por executar o código do jogo Whack-a-LED (NOTA: Esta função serve apenas para manter o código mais limpo e organizado e não pode ser utilizada fora deste código uma vez que faz recurso de variáveis globais e de outras funções presentes apenas neste código.):
+void jogo_whack_a_led(){
 
     // Loop principal do jogo:
     while (true){
