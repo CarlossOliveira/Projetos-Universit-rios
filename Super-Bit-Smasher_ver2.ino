@@ -227,10 +227,10 @@ void loop() {
     // Início do jogo:
     main_jogo();
 
-    // Condição para terminar o jogo caso o tempo tenha expirado ou caso o utilizador tenha ganho o jogo:
-    if (jogo_ativo==false) return;
-
     // Redefenição de algumas variáveis globais utilizadas ao longo de cada rodada do jogo e do estado dos LEDs: 
     for (byte LED = 8; LED <= 11; LED++) pinMode(LED, LOW);
     last_input_bin = 0b00000000; // Variável para guardar o último input do utilizador em binário.
+
+    // Condição para terminar o jogo caso o tempo tenha expirado ou caso o utilizador tenha ganho o jogo:
+    if (jogo_ativo==false) return;
 }
