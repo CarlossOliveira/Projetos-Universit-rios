@@ -112,7 +112,7 @@ void main_jogo() {
         if (anti_ciclo[1] == 5) anti_ciclo[1] = 3;
 
         // Condição para verificar se há um input disponível (se ouverem mais do que 0 bytes disponíveis, executa):
-        if (Serial.available() > 0) {
+        while (Serial.available() > 0) { // Usam-se ciclos em vez de condicionais de maneira a garantir que enquanto o utilizador não introduzir um input, o monitoramento de reset e de tempo não é afetado.
             // Reset do valor do array anti_ciclo associado ao print a pedir um novo input, para que cada vez que após cada operação, o programa peça um novo input:
             anti_ciclo[1] = 0;
 
@@ -139,7 +139,8 @@ void main_jogo() {
             if (anti_ciclo[0] == 1) Serial.println("--- Prima um Operador ---");
             if (anti_ciclo[0] == 5) anti_ciclo[0] = 3; // Para evitar overflow e reduzir o espaço de memória ocupado pelo array anti_ciclo.
 
-            if (reset_jogo()) return;
+            // As condições de reset e jogo continuam a aparecer ao longo do código dentro de loops para que o utilizador possa fazer reset a qualquer momento e para que quando o tempo limite seja atingido, o jogo termine imediatamente ao envez de esperar para voltar ao início do loop prara fazer reset ou acabar o jogo:
+            if (reset_jogo()) return; 
 
             if (timer()) return;
 
@@ -230,7 +231,9 @@ void loop() {
     // Redefenição de algumas variáveis globais utilizadas ao longo de cada rodada do jogo e do estado dos LEDs: 
     for (byte LED = 8; LED <= 11; LED++) pinMode(LED, LOW);
     last_input_bin = 0b00000000; // Variável para guardar o último input do utilizador em binário.
+    anti_ciclo[0]=0;
+    anti_ciclo[1]=0;
 
-    // Condição para terminar o jogo caso o tempo tenha expirado ou caso o utilizador tenha ganho o jogo:
-    if (jogo_ativo==false) return;
+    // Condição para terminar o jogo caso o utilizador tenha ganho o jogo:
+    if (!jogo_ativo) return;
 }
