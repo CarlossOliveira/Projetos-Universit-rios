@@ -9,7 +9,7 @@
 unsigned long lastDebounceTime[3] = {0,0,0}; // Array com o tempo da última mudança de estado de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
 byte lastButtonState[3] = {HIGH,HIGH,HIGH}; // Array com o último estado de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
 byte buttonState[3] = {HIGH,HIGH,HIGH}; // Array com o estado atual de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
-const unsigned long timeLimit = 60000; // Tempo limite para cada rodada do jogo (60 segundos).
+const unsigned long timeLimit = 120000; // Tempo limite para cada rodada do jogo (60 segundos).
 const unsigned int TEMPO_RESET = 2000; // Tempo para as longas pressões no botão OR (2 segundos).
 unsigned long ultimo_ciclo = 0; // Variável para guardar o tempo da última mudança de estado do botão OR para o debounce do reset.
 byte target; // Variável para guardar o valor target.
