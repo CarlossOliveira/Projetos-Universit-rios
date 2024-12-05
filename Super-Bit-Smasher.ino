@@ -51,16 +51,16 @@ bool debounceButton(const byte PINO, const unsigned long debounceDelay = 50) {
 // Função para fazer o reset do jogo:
 bool reset_jogo() {
     // Bloco de código tipo debounce para assegurar o reset do jogo quando o botão do OR é pressionado por mais de 2 segundos:
-    unsigned long novo_ciclo = millis();
-    byte leitura_reset = digitalRead(3);
-    if (leitura_reset == LOW) {
-        if (novo_ciclo - ultimo_ciclo > TEMPO_RESET) {
+    unsigned long novo_ciclo = millis(); // Variável para guardar o tempo atual (tempo aquando da chamada da função).
+    byte leitura_reset = digitalRead(3); // Lê o estado do botão OR.
+    if (leitura_reset == LOW) { // Condição para verificar se o botão OR foi pressionado.
+        if (novo_ciclo - ultimo_ciclo > TEMPO_RESET) { // Condição para verificar se o botão OR foi pressionado por mais de 2 segundos.
             Serial.println("");
             Serial.println("--- Jogo Resetado! ---");
             delay(1000); // Delay intencional para dar um intervalo entre rodadas do jogo após o reset.
             return true;
         }
-    } else ultimo_ciclo = novo_ciclo;
+    } else ultimo_ciclo = novo_ciclo; // Atualiza o tempo da última mudança de estado do botão OR aquando do RESET para o tempo atual (tempo aquando da chamada da função) assim criando um "4º Botão" com variáveis dedicadas para perceber a altura correta do RESET.
     return false;
 }
 
