@@ -1,6 +1,6 @@
 // C++ code
 //
-// --- Super-Bit-Smasher Game ---
+// --- Jogo Super-Bit-Smasher ---
 //
 // Concebido Por: Carlos Oliveira
 
