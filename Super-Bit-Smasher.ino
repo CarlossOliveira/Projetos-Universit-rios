@@ -9,7 +9,7 @@
 unsigned long lastDebounceTime[3] = {0,0,0}; // Array com o tempo da última mudança de estado de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
 byte lastButtonState[3] = {HIGH,HIGH,HIGH}; // Array com o último estado de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
 byte buttonState[3] = {HIGH,HIGH,HIGH}; // Array com o estado atual de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
-const unsigned long timeLimit = 120000; // Tempo limite para cada rodada do jogo (60 segundos).
+const unsigned long timeLimit = 120000; // Tempo limite para cada rodada do jogo (120 segundos).
 const unsigned int TEMPO_RESET = 2000; // Tempo para as longas pressões no botão OR (2 segundos).
 unsigned long ultimo_ciclo = 0; // Variável para guardar o tempo da última mudança de estado do botão OR para o debounce do reset.
 byte target; // Variável para guardar o valor target.
@@ -29,23 +29,23 @@ void setup() {
 
 // Função para fazer debounce dos botões:
 bool debounceButton(const byte PINO, const unsigned long debounceDelay = 50) {
-    byte reading = digitalRead(PINO);
-    const byte index = PINO - 2; // Indexa o array de estados dos botões corretamente.
+    byte reading = digitalRead(PINO); // Lê o estado do botão guardado na variável local PINO.
+    const byte index = PINO - 2; // Indexa o array de estados dos botões de acordo com o PINO selecionado.
 
-    if (reading != lastButtonState[index]) lastDebounceTime[index] = millis();
+    if (reading != lastButtonState[index]) lastDebounceTime[index] = millis(); // Atualiza o tempo da última mudança de estado do botão.
 
-    if ((millis() - lastDebounceTime[index]) >= debounceDelay) {
-        if (reading != buttonState[index]) {
-            buttonState[index] = reading;
-            if (buttonState[index] == LOW) {
-                lastButtonState[index] = reading; // Atualiza o último estado do botão.
-                return true;
+    if ((millis() - lastDebounceTime[index]) >= debounceDelay) { // Condição para verificar se o tempo de debounce foi atingido.
+        if (reading != buttonState[index]) { // Condição para verificar se o estado do botão é diferente do estado anterior (antes do tempo de debounce ser atingido).
+            buttonState[index] = reading; // Atualiza o estado do botão para o novo estado do botão.
+            if (buttonState[index] == LOW) { // Condição para verificar se o botão foi pressionado (pois até aqui as condições não verificam se o botão foi realmente pressionado ou não).
+                lastButtonState[index] = reading; // Atualiza o último estado do botão, neste caso para LOW (pressionado).
+                return true; // Retorna verdadeiro para indicar que o botão foi pressionado.
             }
         }
     }
 
-    lastButtonState[index] = reading; // Atualiza o último estado do botão.
-    return false;
+    lastButtonState[index] = reading; // Atualiza o último estado do botão, neste caso, para HIGH (não pressionado), uma vez que a condição para verificar se o botão foi pressionado não foi satisfeita.
+    return false; // Caso a condição para verificar se o botão foi pressionado não fôr satisfeita, retorna falso para indicar que o botão não foi pressionado ou que a pressão registada não é válida.
 }
 
 // Função para fazer o reset do jogo:
