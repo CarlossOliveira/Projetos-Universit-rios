@@ -9,13 +9,12 @@
 unsigned long lastDebounceTime[3] = {0,0,0}; // Array com o tempo da última mudança de estado de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
 byte lastButtonState[3] = {HIGH,HIGH,HIGH}; // Array com o último estado de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
 byte buttonState[3] = {HIGH,HIGH,HIGH}; // Array com o estado atual de cada botão ({Botão_Pino_2, Botão_Pino_3, Botão_Pino_4}).
-const unsigned long timeLimit = 120000; // Tempo limite para cada rodada do jogo (120 segundos).
+const unsigned long timeLimit = 60000; // Tempo limite para cada rodada do jogo (60 segundos).
 const unsigned int TEMPO_RESET = 2000; // Tempo para as longas pressões no botão OR (2 segundos).
 unsigned long ultimo_ciclo = 0; // Variável para guardar o tempo da última mudança de estado do botão OR para o debounce do reset.
 byte target; // Variável para guardar o valor target.
 byte ponto_de_partida; // Variável para guardar o valor do ponto de partida.
 byte anti_ciclo[2] = {0,0}; // Array para fazer com que os prints que estejam dentro de um ciclo sejam impressos apenas uma vez.
-byte last_input_bin; // Variável para guardar o último input do utilizador em binário.
 bool AND_HABILITADO; // Variável para verificar se a operação AND está habilitada, se não estiver é porque a operação XOR está habilitada.
 unsigned long tempo_inicio_jogo; // Variável para guardar o tempo de início do jogo.
 
@@ -101,12 +100,12 @@ void main_jogo() {
         }
 
         // Condição para fazer um print a pedir um novo input ao utilizador de uma maneira mais formatada e de fácil compreensão e a indicar a operação selecionada:
-        anti_ciclo[1]++; // Incrementa 1 a uma variável guardada no array anti_ciclo que só é resetada quando a condição Serial.available() > 0 estiver satisfeita.
-        if (anti_ciclo[1] == 1) { // Como a variável é incrementada "infinitamente" até que a condição Serial.available() > 0 seja satisfeita, a condição if só é satisfeita uma vez de maneira a só realizar um print a cada input, como pretendido.
+        if (anti_ciclo[1] == 0) { // Como a variável é incrementada "infinitamente" até que a condição Serial.available() > 0 seja satisfeita, a condição if só é satisfeita uma vez de maneira a só realizar um print a cada input, como pretendido.
             Serial.println(""); // Print vazio para dar um espaço entre mensagens de texto.
             Serial.print("Introduza um valor: ");
         }
-        if (anti_ciclo[1] == 5) anti_ciclo[1] = 3; // Para evitar overflow e reduzir o espaço de memória ocupado pelo array anti_ciclo.
+        anti_ciclo[1]++; // Incrementa 1 a uma variável guardada no array anti_ciclo que só é resetada quando a condição Serial.available() > 0 estiver satisfeita.
+        if (anti_ciclo[1] == 5) anti_ciclo[1] = 2; // Para evitar overflow e reduzir o espaço de memória ocupado pelo array anti_ciclo.
 
         // Condição para verificar se há um input disponível (se ouverem mais do que 0 bytes disponíveis, executa):
         while (Serial.available() > 0) { // Usam-se ciclos em vez de condicionais de maneira a garantir que enquanto o utilizador não introduzir um input, o monitoramento de reset e de tempo não é afetado.
@@ -132,9 +131,9 @@ void main_jogo() {
             Serial.println(input_strbin);
 
             // Condição para fazer um único print a pedir a seleção de um operador, no início de cada rodada:
+            if (anti_ciclo[0] == 0) Serial.println("--- Prima um Operador ---");
             anti_ciclo[0]++;
-            if (anti_ciclo[0] == 1) Serial.println("--- Prima um Operador ---");
-            if (anti_ciclo[0] == 5) anti_ciclo[0] = 3; // Para evitar overflow e reduzir o espaço de memória ocupado pelo array anti_ciclo.
+            if (anti_ciclo[0] == 5) anti_ciclo[0] = 2;
 
             // As condições de reset e jogo continuam a aparecer ao longo do código dentro de loops para que o utilizador possa fazer reset a qualquer momento e para que quando o tempo limite seja atingido, o jogo termine imediatamente ao envez de esperar para voltar ao início do loop prara fazer reset ou acabar o jogo:
             if (reset_jogo()) return; 
@@ -193,7 +192,6 @@ void main_jogo() {
                 if (reset_jogo()) return;
 
                 if (timer()) return;
-            
             }
         }
     }
@@ -226,7 +224,6 @@ void loop() {
     main_jogo();
 
     // Redefenição de algumas variáveis globais utilizadas ao longo de cada rodada do jogo e do estado dos LEDs: 
-    for (byte LED = 8; LED <= 11; LED++) pinMode(LED, LOW);
-    last_input_bin = 0b00000000; // Variável para guardar o último input do utilizador em binário.
-    for (byte index = 0; index >= 1; index++) anti_ciclo[index] = 0; // Reset do array anti_ciclo de maneira a fazer os prints recomeçarem corretamente após cada rodada de jogo.
+    for (byte LED = 8; LED <= 11; LED++) digitalWrite(LED, LOW);
+    for (byte index = 0; index <= 1; index++) anti_ciclo[index] = 0; // Reset do array anti_ciclo de maneira a fazer os prints recomeçarem corretamente após cada rodada de jogo.
 }
