@@ -186,10 +186,7 @@ void main_jogo() {
                     Serial.println("----------------------------------------");
                     for (byte index = 0; index <= 3; index++) lastButtonState[index] = HIGH;
                     break;
-                } else if (debounceButton(4) && !AND_HABILITADO) {
-                    Serial.println("ERRO: Operacao Invalida! Selecione novamente.");
-                    continue;
-                } else if (debounceButton(2) && AND_HABILITADO) {
+                } else if ((debounceButton(4) && !AND_HABILITADO) || (debounceButton(2) && AND_HABILITADO)) {
                     Serial.println("ERRO: Operacao Invalida! Selecione novamente.");
                     continue;
                 }
