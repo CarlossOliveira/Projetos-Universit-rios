@@ -95,7 +95,7 @@ void main_jogo() {
 
         // Condição para verificar a vitória:
         if (ponto_de_partida == target) {
-            Serial.println("Parabéns! Acertou no alvo!");
+            Serial.println("Parabens! Acertou no alvo!");
             return;
         }
 
@@ -123,12 +123,18 @@ void main_jogo() {
 
             // Conversor de número inteiro para binário (em formato de Byte):
             String input_strbin = String(input_int, BIN); // Converte o valor inteiro para a forma de binário MAS em formato de string.
-            byte input_bin=input_strbin.toInt(); // Converte o valor binário de string para um valor binário.
+            byte input_bin = 0b00000000; // Inicializa a variável de input em binário.
+            for (byte index = 0; index < input_strbin.length(); index++) {
+                input_bin <<= 1; // Desloca os bits para a esquerda para abrir espaço para o próximo bit.
+                if (input_strbin[index] == '1') {
+                    input_bin |= 0b00000001; // Adiciona o bit 1 na posição menos significativa.
+                }
+            }
 
             // Condição para fazer print do valor de input e do valor de input em binário:
             Serial.print(input_int);
             Serial.print("; BIN: ");
-            Serial.println(input_strbin);
+            Serial.println(input_bin, BIN);
 
             // Condição para fazer um único print a pedir a seleção de um operador, no início de cada rodada:
             if (anti_ciclo[0] == 0) Serial.println("--- Prima um Operador ---");
