@@ -206,9 +206,9 @@ void loop() {
     Serial.println("**** NOVA RODADA ****");
 
     // Geradores de números aleatórios para o alvo e ponto de partida:
-    target = random(0b10000000, 0b11111111);
-    ponto_de_partida = random(0b10000000, 0b11111111);
-
+    target = random(0b00000000, 0b100000000);
+    ponto_de_partida = random(0b00000000, 0b100000000);
+    
     Serial.print("Valor Base: ");
     Serial.println(ponto_de_partida, BIN);
     Serial.print("Valor Target: ");
