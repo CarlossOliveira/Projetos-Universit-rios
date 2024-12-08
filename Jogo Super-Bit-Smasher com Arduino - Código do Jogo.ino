@@ -60,6 +60,7 @@ bool reset_jogo() {
             return true;
         }
     } else ultimo_ciclo = novo_ciclo; // Atualiza o tempo da última mudança de estado do botão OR aquando do RESET para o tempo atual (tempo aquando da chamada da função) assim criando um "4º Botão" com variáveis dedicadas para perceber a altura correta do RESET.
+    
     return false;
 }
 
